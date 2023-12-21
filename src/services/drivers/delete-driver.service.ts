@@ -1,30 +1,30 @@
 import fs from "fs";
 import path from 'path'
-import { Car, CarTypes } from "../../types/car.types";
+import { Driver, DriverTypes } from "../../types/driver.types";
 import AppError from "../../exceptions/generic.exception";
 import { idValidation } from "../../validations/generic.validation";
 
-export namespace DeleteCarService {
-  export const execute = async (model: CarTypes.DeleteParams) => {
+export namespace DeleteDriverService {
+  export const execute = async (model: DriverTypes.DeleteParams) => {
     const { id } = await idValidation.parseAsync(model);
 
     const filePath = path.resolve('./src/database', 'data.json');
     
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
 
-    const cars = data.cars as Car[] || []
+    const drivers = data.drivers as Driver[] || []
 
-    const index = cars.findIndex((car) => car.id === id)
+    const index = drivers.findIndex((driver) => driver.id === id)
 
     if (index === -1) {
-      throw new AppError('CAR_NOT_FOUND', 404)
+      throw new AppError('DRIVER_NOT_FOUND', 404)
     }
 
-    cars.splice(index, 1)
+    drivers.splice(index, 1)
 
     const newData = {
       ...data,
-      cars
+      drivers
     }
 
     const jsonData = JSON.stringify(newData, null, 2); 
@@ -33,6 +33,6 @@ export namespace DeleteCarService {
       if (err) throw err;
     });
 
-    return { message: 'CAR_DELETED' }
+    return { message: 'DRIVER_DELETED' }
   };
 }
