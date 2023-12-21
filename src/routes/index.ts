@@ -3,6 +3,6 @@ import { carRoutes } from './car.routes'
 
 const router = Router()
 
-router.use('/car', carRoutes)
+router.use('/cars', carRoutes)
 
 export { router }

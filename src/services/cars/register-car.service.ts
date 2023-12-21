@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from 'path'
-import { CarTypes } from "../../types/car.types";
+import { v4 as uuidv4 } from 'uuid'
+import { Car, CarTypes } from "../../types/car.types";
 import { registerCarValidation } from "../../validations/car.validations";
 import AppError from "../../exceptions/generic.exception";
 
@@ -13,9 +14,7 @@ export namespace RegisterUserService {
     
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
 
-    const cars = data.cars as {
-      license_plate: string, color: string, brand: string
-    }[] || []
+    const cars = data.cars as Car[] || []
 
     const carExist = cars.find((car) => car.license_plate === license_plate)
 
@@ -24,6 +23,7 @@ export namespace RegisterUserService {
     }
 
     const car = {
+      id: uuidv4(),
       license_plate,
       color,
       brand
