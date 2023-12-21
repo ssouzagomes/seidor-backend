@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { UserController } from '../controllers/user.controller'
+import { DriverController } from '../controllers/driver.controller'
 
-const userRoutes = Router()
+const driverRoutes = Router()
 
-userRoutes.post('/register', UserController.register)
-// userRoutes.put('/:id', UserController.update)
-// userRoutes.delete('/:id', UserController.destroy)
-// userRoutes.get('/:id', UserController.getCarById)
-// userRoutes.get('/', UserController.getAllCars)
+driverRoutes.post('/register', DriverController.register)
+// driverRoutes.put('/:id', DriverController.update)
+// driverRoutes.delete('/:id', DriverController.destroy)
+driverRoutes.get('/:id', DriverController.getDriverById)
+// driverRoutes.get('/', DriverController.getAlldrivers)
 
-export { userRoutes }
+export { driverRoutes }

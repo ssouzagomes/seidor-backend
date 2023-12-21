@@ -5,7 +5,7 @@ import { Car, CarTypes } from "../../types/car.types";
 import { registerCarValidation } from "../../validations/car.validations";
 import AppError from "../../exceptions/generic.exception";
 
-export namespace RegisterUserService {
+export namespace RegisterCarService {
   export const execute = async (model: CarTypes.RegisterParams) => {
     const { license_plate, color, brand } =
       await registerCarValidation.parseAsync(model);
