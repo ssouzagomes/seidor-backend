@@ -16,7 +16,7 @@ const parseZodErrors = (error: any) => {
 			}
 
 			return formatedErrors[key]._errors.forEach((reason: string) => {
-				errors.push(`${String(key)}_${reason}`.trim());
+				errors.push(`${String(key)}: ${reason}`.trim());
 			});
 		}
 	});
