@@ -1,5 +1,7 @@
 import { Response } from 'express'
 import { PresenterFactory } from '../factory/presenter.factory';
+import { ZodError } from 'zod';
+import parseZodErrors from '../helpers/zodErrors';
 
 class AppError {
 	public readonly message: string;
@@ -14,6 +16,10 @@ class AppError {
 	public static handleException(error: any, res: Response) {
 		if (error?.response?.data) {
 			return res.status(error.statusCode).send(new PresenterFactory(null, false, [error.response?.data]));
+		}
+
+		if (error instanceof ZodError) {
+			return res.status(400).send(new PresenterFactory(null, false, parseZodErrors(error)));
 		}
 
 		if (error instanceof AppError) {
