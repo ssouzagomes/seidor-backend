@@ -6,7 +6,7 @@ const filePath = path.resolve(__dirname, 'data.json');
 const data = {
   cars: [],
   drivers: [],
-  car_use: []
+  carUsage: []
 };
 
 const jsonData = JSON.stringify(data, null, 2); 
