@@ -17,5 +17,6 @@ export type CarUsage = {
 
 export namespace CarUsageTypes {
   export type RegisterParams = z.infer<typeof registerCarUsageValidation>
+  export type EndParams = z.infer<typeof idValidation>
   export type GetByIdParams = z.infer<typeof idValidation>
 }
