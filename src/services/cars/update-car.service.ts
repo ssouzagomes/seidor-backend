@@ -1,19 +1,15 @@
 import fs from "fs";
-import path from 'path'
 import { Car, CarTypes } from "../../types/car.types";
 import { updateCarValidation } from "../../validations/car.validations";
 import AppError from "../../exceptions/generic.exception";
+import { database, databasePath } from "../../database";
 
 export namespace UpdateCarService {
   export const execute = async (model: CarTypes.UpdateParams) => {
     const { id, license_plate, color, brand } =
       await updateCarValidation.parseAsync(model);
-
-    const filePath = path.resolve('./src/database', 'data.json');
     
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-
-    let cars = data.cars as Car[] || []
+    let cars = database.cars as Car[] || []
 
     const index = cars.findIndex((car) => car.id === id)
 
@@ -29,15 +25,13 @@ export namespace UpdateCarService {
     })
 
     const newData = {
-      ...data,
+      ...database,
       cars
     }
 
     const jsonData = JSON.stringify(newData, null, 2); 
 
-    fs.writeFile(filePath, jsonData, (err) => {
-      if (err) throw err;
-    });
+    fs.writeFileSync(databasePath, jsonData);
 
     return cars[index]
   };

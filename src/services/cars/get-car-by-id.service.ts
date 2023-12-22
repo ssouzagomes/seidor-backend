@@ -1,18 +1,13 @@
-import fs from "fs";
-import path from 'path'
 import { Car, CarTypes } from "../../types/car.types";
 import AppError from "../../exceptions/generic.exception";
 import { idValidation } from "../../validations/generic.validation";
+import { database } from "../../database";
 
 export namespace GetCarByIdService {
   export const execute = async (model: CarTypes.GetByIdParams) => {
     const { id } = await idValidation.parseAsync(model);
 
-    const filePath = path.resolve('./src/database', 'data.json');
-    
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-
-    const cars = data.cars as Car[] || []
+    const cars = database.cars as Car[] || []
 
     const car = cars.find((car) => car.id === id)
 

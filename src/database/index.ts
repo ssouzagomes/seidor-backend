@@ -1,17 +1,14 @@
-import fs from 'fs'
-import path from 'path'
+import fs from "fs";
+import path from "path";
 
-const filePath = path.resolve(__dirname, 'data.json');
+const fileName =
+  process.env.NODE_ENV === "test" ? "data-test.json" : "data.json";
 
-const data = {
-  cars: [],
-  drivers: [],
-  carUsage: []
-};
+const databasePath = path.resolve("./src/database", fileName);
 
-const jsonData = JSON.stringify(data, null, 2); 
+const database = JSON.parse(fs.readFileSync(databasePath, "utf8"));
 
-fs.writeFile(filePath, jsonData, (err) => {
-  if (err) throw err;
-  console.log('Schema successfully created!');
-});
+export {
+  database,
+  databasePath
+}

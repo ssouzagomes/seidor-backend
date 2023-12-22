@@ -28,7 +28,7 @@ export namespace DeleteCarService {
     );
 
     if (carIsInUse) {
-      throw new AppError("CAR_IS_IN_USE", 400);
+      throw new AppError("CAR_IN_USE", 400);
     }
 
     cars.splice(index, 1)

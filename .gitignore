@@ -1,4 +1,5 @@
 node_modules
+coverage
 build
 
 package-lock.json
@@ -6,3 +7,4 @@ yarn.lock
 .env
 
 data.json
+data-test.json
