@@ -1,22 +1,18 @@
 import fs from "fs";
-import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { CarUsage, CarUsageTypes } from "../../types/car-usage.types";
 import { registerCarUsageValidation } from "../../validations/car-usage.validation";
 import { Driver } from "../../types/driver.types";
 import AppError from "../../exceptions/generic.exception";
 import { Car } from "../../types/car.types";
+import { database, databasePath } from "../../database";
 
 export namespace RegisterCarUsageService {
   export const execute = async (model: CarUsageTypes.RegisterParams) => {
     const { driver_id, car_id, reason } =
       await registerCarUsageValidation.parseAsync(model);
 
-    const filePath = path.resolve("./src/database", "data.json");
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-
-    const drivers = (data.drivers as Driver[]) || []
+    const drivers = (database.drivers as Driver[]) || []
 
     const driver = drivers.find((driver) => driver.id === driver_id)
 
@@ -24,7 +20,7 @@ export namespace RegisterCarUsageService {
       throw new AppError('DRIVER_NOT_FOUND', 404)
     }
 
-    const cars = (data.cars as Car[]) || []
+    const cars = (database.cars as Car[]) || []
 
     const car = cars.find((car) => car.id === car_id)
 
@@ -32,7 +28,7 @@ export namespace RegisterCarUsageService {
       throw new AppError('CAR_NOT_FOUND', 404)
     }
 
-    const carUsage = (data.carUsage as CarUsage[]) || [];
+    const carUsage = (database.carUsage as CarUsage[]) || [];
 
     const driverAlreadyUsingCar = carUsage.find(
       (usage) => usage.driver_id === driver_id && !usage.end_date
@@ -64,16 +60,13 @@ export namespace RegisterCarUsageService {
     carUsage.push(createdCarUsage)
 
     const newData = {
-      ...data,
+      ...database,
       carUsage
     }
 
     const jsonData = JSON.stringify(newData, null, 2); 
 
-    fs.writeFile(filePath, jsonData, (err) => {
-      if (err) throw err;
-    });
-
+    fs.writeFileSync(databasePath, jsonData);
 
     return createdCarUsage;
   };

@@ -14,5 +14,5 @@ export namespace CarTypes {
   export type UpdateParams = z.infer<typeof updateCarValidation>
   export type DeleteParams = z.infer<typeof idValidation>
   export type GetByIdParams = z.infer<typeof idValidation>
-	export type Filters = { color: string, brand: string };
+	export type Filters = { color?: string, brand?: string };
 }

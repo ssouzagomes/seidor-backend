@@ -1,19 +1,15 @@
 import fs from "fs";
-import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import { Driver, DriverTypes } from "../../types/driver.types";
 import AppError from "../../exceptions/generic.exception";
 import { registerDriverValidation } from "../../validations/driver.validations";
+import { database, databasePath } from "../../database";
 
 export namespace RegisterDriverService {
   export const execute = async (model: DriverTypes.RegisterParams) => {
     const { name } = await registerDriverValidation.parseAsync(model);
 
-    const filePath = path.resolve('./src/database', 'data.json');
-    
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-
-    const drivers = data.drivers as Driver[] || []
+    const drivers = database.drivers as Driver[] || []
 
     const driverExist = drivers.find((driver) => driver.name.toLowerCase() === name.toLowerCase())
 
@@ -29,15 +25,13 @@ export namespace RegisterDriverService {
     drivers.push(driver)
 
     const newData = {
-      ...data,
+      ...database,
       drivers
     }
 
     const jsonData = JSON.stringify(newData, null, 2); 
 
-    fs.writeFile(filePath, jsonData, (err) => {
-      if (err) throw err;
-    });
+    fs.writeFileSync(databasePath, jsonData);
 
     return driver
   };

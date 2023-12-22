@@ -2,7 +2,7 @@ import { RegisterCarService } from "../../services/cars/register-car.service";
 import AppError from "../../exceptions/generic.exception";
 
 describe("register car service", () => {
-  it("would be able to register a car", async () => {
+  it("should be able to register a car", async () => {
     const car = {
       license_plate: "ABC2I36",
       color: "Prata",
@@ -16,7 +16,7 @@ describe("register car service", () => {
     expect(result && typeof result === "object").toBe(true);
   });
 
-  it("not be able to register a car if license plate already exist", async () => {
+  it("should not be able to register a car if license plate already exist", async () => {
     const car = {
       license_plate: "ABC2I37",
       color: "Prata",

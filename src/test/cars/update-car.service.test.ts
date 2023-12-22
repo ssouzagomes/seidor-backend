@@ -4,7 +4,7 @@ import { UpdateCarService } from "../../services/cars/update-car.service";
 import { v4 as uuiv4 } from 'uuid'
 
 describe("update car service", () => {
-  it("would be able to update a car", async () => {
+  it("should be able to update a car", async () => {
     const car = {
       license_plate: "ABC2I31",
       color: "Prata",
@@ -28,7 +28,7 @@ describe("update car service", () => {
     expect(result && typeof result === "object").toBe(true);
   });
 
-  it("not be able to update a car if car not found", async () => {
+  it("should not be able to update a car if car not found", async () => {
     await expect(UpdateCarService.execute({
       id: uuiv4(),
       license_plate: "ABC2I37",
