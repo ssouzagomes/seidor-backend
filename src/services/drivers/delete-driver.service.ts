@@ -1,19 +1,15 @@
 import fs from "fs";
-import path from "path";
 import { Driver, DriverTypes } from "../../types/driver.types";
 import AppError from "../../exceptions/generic.exception";
 import { idValidation } from "../../validations/generic.validation";
 import { CarUsage } from "../../types/car-usage.types";
+import { database, databasePath } from "../../database";
 
 export namespace DeleteDriverService {
   export const execute = async (model: DriverTypes.DeleteParams) => {
     const { id } = await idValidation.parseAsync(model);
 
-    const filePath = path.resolve("./src/database", "data.json");
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-
-    const drivers = (data.drivers as Driver[]) || [];
+    const drivers = (database.drivers as Driver[]) || [];
 
     const index = drivers.findIndex((driver) => driver.id === id);
 
@@ -21,7 +17,7 @@ export namespace DeleteDriverService {
       throw new AppError("DRIVER_NOT_FOUND", 404);
     }
 
-    const carUsage = (data.carUsage as CarUsage[]) || [];
+    const carUsage = (database.carUsage as CarUsage[]) || [];
 
     const driverIsUsingACar = carUsage.find(
       (usage) => usage.driver_id === id && !usage.end_date
@@ -34,15 +30,13 @@ export namespace DeleteDriverService {
     drivers.splice(index, 1);
 
     const newData = {
-      ...data,
+      ...database,
       drivers,
     };
 
     const jsonData = JSON.stringify(newData, null, 2);
 
-    fs.writeFile(filePath, jsonData, (err) => {
-      if (err) throw err;
-    });
+    fs.writeFileSync(databasePath, jsonData);
 
     return { message: "DRIVER_DELETED" };
   };

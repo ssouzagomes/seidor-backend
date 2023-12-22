@@ -1,16 +1,11 @@
-import fs from "fs";
-import path from "path";
 import { Driver, DriverTypes } from "../../types/driver.types";
+import { database } from "../../database";
 
 export namespace GetAllDriversService {
   export const execute = async (filter: DriverTypes.Filters) => {
     const { name } = filter;
 
-    const filePath = path.resolve("./src/database", "data.json");
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-
-    const drivers = (data.drivers as Driver[]) || [];
+    const drivers = (database.drivers as Driver[]) || [];
 
     let filteredDrivers = drivers;
 

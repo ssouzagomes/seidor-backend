@@ -12,5 +12,5 @@ export namespace DriverTypes {
   export type UpdateParams = z.infer<typeof updateDriverValidation>
   export type DeleteParams = z.infer<typeof idValidation>
   export type GetByIdParams = z.infer<typeof idValidation>
-	export type Filters = { name: string };
+	export type Filters = { name?: string };
 }
