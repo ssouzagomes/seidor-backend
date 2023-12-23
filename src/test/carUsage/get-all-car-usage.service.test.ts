@@ -2,7 +2,6 @@ import { GetAllCarUsageService } from "../../services/carUsage/get-all-car-usage
 import { RegisterCarUsageService } from "../../services/carUsage/register-car-usage.service";
 import { RegisterCarService } from "../../services/cars/register-car.service";
 import { RegisterDriverService } from "../../services/drivers/register-driver.service";
-import { v4 as uuidv4 } from 'uuid'
 
 describe("get all car usage service", () => {
   it("should be able to get all car usage", async () => {
